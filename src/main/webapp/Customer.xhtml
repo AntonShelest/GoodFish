@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:body>
+<ui:composition template="WEB-INF/templates/Template.xhtml">
+	<ui:define name="content">
+	    <div class="feature">
+			<div class="feature-inner">
+				<h1>Hello, Dear #{customer.user.name}!</h1>
+			</div>
+		</div>
+		
+		<div class="blankSection"></div>
+		
+		<h:dataTable value="#{customer.customerService.getFish4Sale()}" 
+				 var="fishItem" 
+				 styleClass="table" 
+				 headerClass="tableHeader" 
+				 rowClasses="tableOddRow, tableEvenRow"> 
+	
+			<h:column> 
+				<f:facet name="header">Fish Type</f:facet> 
+				#{fishItem.fishType.name} 
+			</h:column>
+			
+			<h:column> 
+				<f:facet name="header">Price</f:facet> 
+				#{fishItem.price} 
+			</h:column>
+			
+			<h:column> 
+				<f:facet name="header">Total Weight</f:facet> 
+				#{fishItem.weight} 
+			</h:column>
+			
+		</h:dataTable>
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>
