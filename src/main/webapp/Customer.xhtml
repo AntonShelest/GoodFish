@@ -16,7 +16,7 @@
 		</div>
 		
 		<div class="blankSection"></div>
-		
+		<h:form>
 		<h:dataTable value="#{customer.customerService.getFish4Sale()}" 
 				 var="fishItem" 
 				 styleClass="table" 
@@ -38,7 +38,18 @@
 				#{fishItem.weight} 
 			</h:column>
 			
+			<h:column> 
+				<f:facet name="header">Weight for purchase</f:facet> 
+				<h:inputText/> 
+			</h:column>
+			
+			<h:column> 
+				<f:facet name="header">Add</f:facet> 
+				<h:commandButton value="Add" action="#{customer.addItem(fishItem, 160)}" /> 
+			</h:column>
+			
 		</h:dataTable>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </h:body>
