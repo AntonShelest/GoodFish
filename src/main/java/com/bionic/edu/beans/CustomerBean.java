@@ -24,6 +24,9 @@ public class CustomerBean implements Serializable {
 	private UserBean currentUser;
 	private User user = null;
 	private SaleParcel parcel = null;
+	private SaleParcelItem spi = null;
+	private double itemWeight = 0;
+	private String itemSelected = "false";
 	
 	@Inject
 	private CustomerService customerService;
@@ -34,6 +37,7 @@ public class CustomerBean implements Serializable {
 	public void init(){
 		user = currentUser.getUser();
 		parcel = new SaleParcel();
+		spi = new SaleParcelItem();
 	}
 	
 	public UserBean getCurrentUser() {
@@ -60,18 +64,76 @@ public class CustomerBean implements Serializable {
 		this.customerService = customerService;
 	}
 	
-	public String addItem(FishItem fi, double weight){
-		SaleParcelItem spi = new SaleParcelItem();
-		spi.setFishItem(fi);
-		spi.setPrice(fi.getPrice());
-		spi.setSaleParcel(parcel);
-		spi.setWeight(weight);
+	public SaleParcel getParcel() {
+		return parcel;
+	}
+
+	public void setParcel(SaleParcel parcel) {
+		this.parcel = parcel;
+	}
+
+	public SaleParcelItem getSpi() {
+		return spi;
+	}
+
+	public void setSpi(SaleParcelItem spi) {
+		this.spi = spi;
+	}
+	
+	public double getItemWeight() {
+		return itemWeight;
+	}
+
+	public void setItemWeight(double itemWeight) {
+		this.itemWeight = itemWeight;
+	}
+
+	public String getItemSelected() {
+		return itemSelected;
+	}
+
+	public void setItemSelected(String itemSelected) {
+		this.itemSelected = itemSelected;
+	}
+
+	public String specifyItemWeight(){
+		if (itemSelected.equals("false"))
+			return "Customer";
+		spi.setWeight(itemWeight);
 		List<SaleParcelItem> spiList = new ArrayList<SaleParcelItem>();
 		if (parcel.getSaleParcelItems() != null){
 			spiList = (List<SaleParcelItem>)parcel.getSaleParcelItems();
 		}
 		spiList.add(spi);
 		parcel.setSaleParcelItems(spiList);
+		
+		spi = new SaleParcelItem();
+		itemSelected = "false";
+		itemWeight = 0;
 		return "Customer";
+	}
+
+	public String addItem(FishItem fi){
+		spi.setFishItem(fi);
+		spi.setPrice(fi.getPrice());
+		spi.setSaleParcel(parcel);
+		fi.setWeight(fi.getWeight() - spi.getWeight());
+		itemSelected = "true";
+		return "Customer";
+	}
+	
+	public String getTotalWeight(){
+		double sum = 0;
+		if (parcel.getSaleParcelItems() != null)
+			for(SaleParcelItem spi: parcel.getSaleParcelItems())
+				sum += spi.getWeight();
+		return " "+sum;
+	}
+	
+	public double getTotalPrice(){
+		double sum = 0;
+		for(SaleParcelItem spi: parcel.getSaleParcelItems())
+			sum += spi.getPrice();
+		return sum;
 	}
 }

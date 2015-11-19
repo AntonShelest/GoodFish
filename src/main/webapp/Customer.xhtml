@@ -16,13 +16,34 @@
 		</div>
 		
 		<div class="blankSection"></div>
+		
+		<h:form>
+			<h:outputText value="Specify weight!" rendered="#{customer.itemSelected}"/>
+			<h:inputText id="itemWeight" value="#{customer.itemWeight}" 
+				rendered="#{customer.itemSelected}"> 
+				<f:convertNumber minFractionDigits="2" />
+				<f:validateDoubleRange maximum="1000.00" /> 
+			</h:inputText>
+			<h:message for="itemWeight" style="color:red" />
+			<h:commandButton value="add!" action="#{customer.specifyItemWeight()}"
+				rendered="#{customer.itemSelected}"/>
+		</h:form>
+			
+		<h:form>
+			<h:commandLink action="Customer">
+	  				<h:graphicImage value="resources/image/parcel/saleParcel2.jpg" />
+			</h:commandLink>
+		</h:form>
+		<span>Total weight</span>
+		<span>#{customer.getTotalWeight()}</span>
+		
 		<h:form>
 		<h:dataTable value="#{customer.customerService.getFish4Sale()}" 
-				 var="fishItem" 
+				 var="fishItem"
 				 styleClass="table" 
 				 headerClass="tableHeader" 
 				 rowClasses="tableOddRow, tableEvenRow"> 
-	
+		
 			<h:column> 
 				<f:facet name="header">Fish Type</f:facet> 
 				#{fishItem.fishType.name} 
@@ -40,16 +61,18 @@
 			
 			<h:column> 
 				<f:facet name="header">Weight for purchase</f:facet> 
-				<h:inputText/> 
 			</h:column>
 			
 			<h:column> 
 				<f:facet name="header">Add</f:facet> 
-				<h:commandButton value="Add" action="#{customer.addItem(fishItem, 160)}" /> 
+				<h:commandLink  action="#{customer.addItem(fishItem)}" >
+					<h:graphicImage value="resources/image/parcel/saleParcel2.jpg" height="16" width="16" title="Edit"/>
+				</h:commandLink>
 			</h:column>
-			
+		
 		</h:dataTable>
 		</h:form>
+		
 	</ui:define>
 </ui:composition>
 </h:body>

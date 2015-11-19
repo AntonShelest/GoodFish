@@ -88,6 +88,16 @@ h1, h2, h3, h4, h5, h6 {color:darkgreen;}
 	background:none repeat scroll 0 0 #BCCE98; 
 }
 
+/* Parcel Button */
+.parcelButton{
+	float:right;
+	background:green;
+}
+
+.someCssClassName{
+	background-image: url("http://image/parcel/saleParcoel1.jpg");
+}
+
 /* Footerblurb */
 #footerblurb { background:#DAE9BC;color:green;}
 #footerblurb-inner { margin:0 auto; width:100%; padding:24px;}
