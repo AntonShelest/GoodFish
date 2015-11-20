@@ -60,6 +60,7 @@ public class AdminDaoImp implements AdminDao{
 		query.setParameter("id", id);
 		return query.getSingleResult();
 	}
+	
 	public User findUById(int id){
 		String sql = "SELECT u FROM User u WHERE u.id = :id";
 		TypedQuery<User> query = em.createQuery(sql, User.class);

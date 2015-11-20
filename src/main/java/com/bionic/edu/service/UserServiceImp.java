@@ -18,6 +18,11 @@ public class UserServiceImp implements UserService {
 	UserDao userDao;
 	
 	//User Story #4
+	public User find(User user){
+		return userDao.find(user);
+	}
+	
+	//User Story #4
 	@Transactional
     public User register(User user){
 		try{

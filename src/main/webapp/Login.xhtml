@@ -16,7 +16,7 @@
 		</div>
 	</div>
 	<div class="blankSection">	
-		<h:outputText value="#{msgs.failedLogon}" class="errorMessage" rendered="#{userBean.failed}"/>
+		<h:outputText value="#{msgs.failedLogon}" class="errorMessage" rendered="#{userBean.loginFailed}"/>
 	</div>
 	<div class="content">
 	<h:form>
@@ -36,9 +36,13 @@
 			</h:inputSecret>
 			<h:message for="password" class="errorMessage"/> <br/>
 			<h:commandButton class="button" value="Login" action="#{userBean.login}" /> 
+			
 		</h:panelGrid>
 	</h:form>
 	</div>
+	<h:form>
+		<h:commandLink value="Register" action="Register" />
+	</h:form>
 	</ui:define>
 </ui:composition>
 </h:body>

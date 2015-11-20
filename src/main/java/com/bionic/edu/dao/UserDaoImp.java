@@ -15,6 +15,15 @@ public class UserDaoImp implements UserDao {
 	EntityManager em;
 	
 	//User Story #4
+	public User find(User user){
+		String sql = "SELECT u FROM User u WHERE u.login = :login";
+		TypedQuery<User> query = em.createQuery(sql, User.class);
+		query.setParameter("login", user.getLogin());
+		try {return query.getSingleResult();}
+		catch(NoResultException e){return null;}
+	}
+	
+	//User Story #4
 	public User register(User user){
 		if (user.getId() == 0)
 			em.persist(user);

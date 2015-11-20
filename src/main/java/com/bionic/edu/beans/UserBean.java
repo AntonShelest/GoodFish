@@ -20,11 +20,13 @@ public class UserBean implements Serializable {
 	@Inject
 	private UserService userService;
 	private User user = null;
-	private String failed;
+	private String loginFailed;
+	private String registerFailed;
 	
 	public UserBean(){
 		user = new User();
-		failed = "false";
+		loginFailed = "false";
+		registerFailed = "false";
 	}
 	
 	public String login(){
@@ -32,8 +34,20 @@ public class UserBean implements Serializable {
 		if (user.getId() != 0)
 			return "Customer";
 		else { 
-			failed = "true";
+			loginFailed = "true";
 			return "login";
+		}
+	}
+	
+	public String register(){
+		User usr = userService.find(user);
+		if (usr != null){
+			registerFailed = "true";
+			return "Register";
+		}
+		else { 
+			user = userService.register(user);
+			return "Customer";
 		}
 	}
 	
@@ -50,11 +64,19 @@ public class UserBean implements Serializable {
 		this.user = user;
 	}
 
-	public String getFailed() {
-		return failed;
+	public String getLoginFailed() {
+		return loginFailed;
 	}
 
-	public void setFailed(String failed) {
-		this.failed = failed;
+	public void setLoginFailed(String loginFailed) {
+		this.loginFailed = loginFailed;
+	}
+
+	public String getRegisterFailed() {
+		return registerFailed;
+	}
+
+	public void setRegisterFailed(String registerFailed) {
+		this.registerFailed = registerFailed;
 	}
 }

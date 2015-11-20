@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -24,9 +25,8 @@ public class CustomerBean implements Serializable {
 	private UserBean currentUser;
 	private User user = null;
 	private SaleParcel parcel = null;
-	private SaleParcelItem spi = null;
 	private double itemWeight = 0;
-	private String itemSelected = "false";
+	private List<FishItem> fishItems = null;
 	
 	@Inject
 	private CustomerService customerService;
@@ -37,7 +37,7 @@ public class CustomerBean implements Serializable {
 	public void init(){
 		user = currentUser.getUser();
 		parcel = new SaleParcel();
-		spi = new SaleParcelItem();
+		fishItems = customerService.getFish4Sale();
 	}
 	
 	public UserBean getCurrentUser() {
@@ -71,14 +71,6 @@ public class CustomerBean implements Serializable {
 	public void setParcel(SaleParcel parcel) {
 		this.parcel = parcel;
 	}
-
-	public SaleParcelItem getSpi() {
-		return spi;
-	}
-
-	public void setSpi(SaleParcelItem spi) {
-		this.spi = spi;
-	}
 	
 	public double getItemWeight() {
 		return itemWeight;
@@ -88,52 +80,56 @@ public class CustomerBean implements Serializable {
 		this.itemWeight = itemWeight;
 	}
 
-	public String getItemSelected() {
-		return itemSelected;
+	public List<FishItem> getFishItems() {
+		return fishItems;
 	}
 
-	public void setItemSelected(String itemSelected) {
-		this.itemSelected = itemSelected;
+	public void setFishItems(List<FishItem> fishItems) {
+		this.fishItems = fishItems;
 	}
 
-	public String specifyItemWeight(){
-		if (itemSelected.equals("false"))
-			return "Customer";
+	public String addItem(FishItem fi){
+		SaleParcelItem spi = new SaleParcelItem();
+		spi.setFishItem(fi);
+		spi.setPrice(fi.getPrice());
+		spi.setSaleParcel(parcel);
 		spi.setWeight(itemWeight);
+		fi.setWeight(fi.getWeight() - itemWeight);
+		
+		
 		List<SaleParcelItem> spiList = new ArrayList<SaleParcelItem>();
 		if (parcel.getSaleParcelItems() != null){
 			spiList = (List<SaleParcelItem>)parcel.getSaleParcelItems();
 		}
 		spiList.add(spi);
 		parcel.setSaleParcelItems(spiList);
-		
-		spi = new SaleParcelItem();
-		itemSelected = "false";
 		itemWeight = 0;
 		return "Customer";
 	}
-
-	public String addItem(FishItem fi){
-		spi.setFishItem(fi);
-		spi.setPrice(fi.getPrice());
-		spi.setSaleParcel(parcel);
-		fi.setWeight(fi.getWeight() - spi.getWeight());
-		itemSelected = "true";
-		return "Customer";
-	}
 	
-	public String getTotalWeight(){
+	public double getTotalWeight(){
 		double sum = 0;
 		if (parcel.getSaleParcelItems() != null)
 			for(SaleParcelItem spi: parcel.getSaleParcelItems())
 				sum += spi.getWeight();
-		return " "+sum;
+		return sum;
 	}
 	
 	public double getTotalPrice(){
 		double sum = 0;
-		for(SaleParcelItem spi: parcel.getSaleParcelItems())
-			sum += spi.getPrice();
+		if (parcel.getSaleParcelItems() != null)
+			for(SaleParcelItem spi: parcel.getSaleParcelItems())
+				sum += spi.getPrice()*spi.getWeight();
 		return sum;
 	}
+	
+	public String removeItem(SaleParcelItem spi){
+		parcel.getSaleParcelItems().remove(spi);
+		return "Parcel";
+	}
+	
+	public String logout() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "Login";
+    }
 }
