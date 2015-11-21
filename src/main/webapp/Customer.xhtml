@@ -5,6 +5,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core">
+	
+<h:head>
+  <title>AjaxTest</title>
+</h:head>
 
 <h:body>
 <ui:composition template="WEB-INF/templates/Template.xhtml">
@@ -25,12 +29,13 @@
 			</h:commandLink>
 		</h:form>
 		<span>Total weight</span>
-		<span>#{customer.getTotalWeight()}</span>
+		<h:outputText id="totalWeight" value="#{customer.getTotalWeight()}"/>
 		<br/>
 		<span>Total price</span>
-		<span>#{customer.getTotalPrice()}</span>
+		<h:outputText id="totalPrice" value="#{customer.getTotalPrice()}"/>
 		
-		<h:dataTable value="#{customer.fishItems}" 
+		<h:panelGrid columns="3" style="width:100%">
+		<h:dataTable id="table" value="#{customer.fishItems}" 
 				 var="fishItem"
 				 styleClass="table" 
 				 headerClass="tableHeader" 
@@ -45,26 +50,39 @@
 				<f:facet name="header">Price</f:facet> 
 				#{fishItem.price} 
 			</h:column>
-			
+				 
 			<h:column> 
 				<f:facet name="header">Total Weight</f:facet> 
-				#{fishItem.weight} 
+				#{fishItem.weight}
 			</h:column>
 			
+		</h:dataTable>
+		
+		<h:dataTable value="#{customer.fishItems}" 
+				 var="fishItem"
+				 styleClass="table" 
+				 headerClass="tableHeader" 
+				 rowClasses="tableOddRow, tableEvenRow">
+				 	
 			<h:column> 
 				<f:facet name="header">Add</f:facet>
 				<h:form>
-				<h:panelGrid columns="2">
+				Specify weight
 				<h:inputText value="#{customer.itemWeight}" style="width:40%"/>
 				<h:commandLink  action="#{customer.addItem(fishItem)}" >
-					<h:graphicImage value="resources/image/parcel/saleParcel2.jpg" height="16" width="16" title="Edit"/>
+					<h:graphicImage value="resources/image/parcel/saleParcel2.jpg" 
+						height="16" width="16" title="Add"/>
+					<f:ajax execute="@all" render=":table :totalWeight :totalPrice"/>
 				</h:commandLink>
-				</h:panelGrid>
 				</h:form>
 			</h:column>
 		
 		</h:dataTable>
+		</h:panelGrid>
 		
+		<h:form>
+			<h:commandButton value="submit" action="#{customer.submit()}"/>
+		</h:form>
 		
 	</ui:define>
 </ui:composition>

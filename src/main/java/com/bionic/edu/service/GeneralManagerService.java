@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.bionic.edu.entity.FishItem;
+import com.bionic.edu.entity.FishType;
 import com.bionic.edu.entity.PurchaseParcel;
 import com.bionic.edu.entity.ReportByDate;
 import com.bionic.edu.entity.ReportByFish;
@@ -11,7 +12,13 @@ import com.bionic.edu.entity.TotalReport;
 import com.bionic.edu.entity.User;
 
 public interface GeneralManagerService {
-	//User Story #5-9
+	//User Story #5,6,12
+	public List<FishType> getAllFishTypes();
+	
+	//User Story #5-8
+	public List<PurchaseParcel> getRegisteredPurchaseParcels();
+	
+	//User Story #5-8
 	public PurchaseParcel savePurchaseParcel(PurchaseParcel purchaseParcel);
 	
 	//User Story #8

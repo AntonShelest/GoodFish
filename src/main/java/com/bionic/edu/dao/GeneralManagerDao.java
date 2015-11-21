@@ -13,6 +13,9 @@ import com.bionic.edu.entity.User;
 
 public interface GeneralManagerDao {
 	//User Story #5-8
+	public List<PurchaseParcel> getRegisteredPurchaseParcels();
+	
+	//User Story #5-8
 	public PurchaseParcel savePurchaseParcel(PurchaseParcel purchaseParcel);
 	
 	//User Story #8
@@ -40,6 +43,6 @@ public interface GeneralManagerDao {
 	public List<SaleParcelItem> getSaleItemsByPeriodAndFishType(
 			LocalDateTime beginDate, LocalDateTime endDate, int fishTypeId);
 	
-	//User Story #12
+	//User Story #5,6,12
 	public List<FishType> getAllFishTypes();
 }

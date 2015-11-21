@@ -3,7 +3,6 @@ package com.bionic.edu.dao;
 import org.springframework.stereotype.Repository;
 
 import com.bionic.edu.entity.FishItem;
-import com.bionic.edu.entity.PurchaseParcel;
 import com.bionic.edu.entity.SaleParcel;
 
 import java.util.ArrayList;

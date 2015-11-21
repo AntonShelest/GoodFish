@@ -32,7 +32,13 @@ public class UserBean implements Serializable {
 	public String login(){
 		user = userService.login(user);
 		if (user.getId() != 0)
-			return "Customer";
+			switch(user.getRoleId()){
+			case "Customer": return "Customer";
+			case "General Manager": return "GeneralManager";
+			case "Cold Store Manager": return "ColdStoreManager";
+			case "Accountant": return "Accountant";
+			default: return "Customer";
+			}
 		else { 
 			loginFailed = "true";
 			return "login";

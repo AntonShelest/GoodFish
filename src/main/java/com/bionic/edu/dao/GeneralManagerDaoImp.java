@@ -23,10 +23,20 @@ public class GeneralManagerDaoImp implements GeneralManagerDao {
 	@PersistenceContext
 	EntityManager em;
 	
-	//User Story #5-9
+	//User Story #5-8
+	public List<PurchaseParcel> getRegisteredPurchaseParcels(){
+		String sql = "SELECT pp FROM PurchaseParcel pp WHERE pp.forSale = 'N'";
+		TypedQuery<PurchaseParcel> query = em.createQuery(sql, PurchaseParcel.class);
+		try{return query.getResultList();}
+		catch(Exception e) {return new ArrayList<PurchaseParcel>();}
+	}
+	
+	//User Story #5-8
 	public PurchaseParcel savePurchaseParcel(PurchaseParcel purchaseParcel){
-		if (purchaseParcel.getId() == 0)
+		if (purchaseParcel.getId() == 0){
+			purchaseParcel.setForSale("N");
 			em.persist(purchaseParcel);
+		}
 		else em.merge(purchaseParcel);
 		return purchaseParcel;	
 	}	

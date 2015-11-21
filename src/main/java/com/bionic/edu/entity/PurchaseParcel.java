@@ -10,6 +10,7 @@ public class PurchaseParcel {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
+    private String forSale;
     private java.sql.Timestamp created;   
     private java.sql.Timestamp arrived;   
 	private String ship;
@@ -56,5 +57,13 @@ public class PurchaseParcel {
 
 	public void setFishItems(Collection<FishItem> fishItems) {
 		this.fishItems = fishItems;
+	}
+
+	public String getForSale() {
+		return forSale;
+	}
+
+	public void setForSale(String forSale) {
+		this.forSale = forSale;
 	}
 }

@@ -1,5 +1,7 @@
 package com.bionic.edu.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,6 +27,11 @@ public class ColdStoreManagerServiceImp implements ColdStoreManagerService {
 	//User Story #13
 	@Transactional
 	public PurchaseParcel registerParcelArrival(PurchaseParcel purchaseParcel){
+		purchaseParcel.setArrived(Timestamp.valueOf(LocalDateTime.now()));
+		String forSale = "Y";
+		for(FishItem fi:purchaseParcel.getFishItems())
+			if (fi.getPrice() <= 0 || fi.getWeight() <= 0) forSale = "N";
+		purchaseParcel.setForSale(forSale);
 		return coldStoreManagerDao.registerParcelArrival(purchaseParcel);
 	}
 	

@@ -1,4 +1,6 @@
 package com.bionic.edu.service;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,7 +27,9 @@ public class CustomerServiceImp implements CustomerService{
 	@Transactional
 	public SaleParcel sumbitSaleParcel(SaleParcel saleParcel){
     	User user = saleParcel.getUser();
-    	if (saleParcel.getStatus().equals("S") && user.getPrepaymentPercent() == 0)
+	    saleParcel.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));
+	    saleParcel.setStatus("S");
+    	if (user.getPrepaymentPercent() == 0)
     		saleParcel.setStatus("R");
 		return customerDao.submitSaleParcel(saleParcel);
 	}

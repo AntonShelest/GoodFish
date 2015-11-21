@@ -15,6 +15,7 @@ import com.bionic.edu.entity.FishItem;
 import com.bionic.edu.entity.SaleParcel;
 import com.bionic.edu.entity.SaleParcelItem;
 import com.bionic.edu.entity.User;
+import com.bionic.edu.service.ColdStoreManagerService;
 import com.bionic.edu.service.CustomerService;
 
 @Named("customer")
@@ -25,11 +26,14 @@ public class CustomerBean implements Serializable {
 	private UserBean currentUser;
 	private User user = null;
 	private SaleParcel parcel = null;
-	private double itemWeight = 0;
+	private double itemWeight = 20;
 	private List<FishItem> fishItems = null;
 	
 	@Inject
 	private CustomerService customerService;
+	
+	@Inject
+	private ColdStoreManagerService coldStoreManagerService;
 	
 	public CustomerBean() { }
 	
@@ -37,6 +41,7 @@ public class CustomerBean implements Serializable {
 	public void init(){
 		user = currentUser.getUser();
 		parcel = new SaleParcel();
+		parcel.setUser(user);
 		fishItems = customerService.getFish4Sale();
 	}
 	
@@ -88,7 +93,7 @@ public class CustomerBean implements Serializable {
 		this.fishItems = fishItems;
 	}
 
-	public String addItem(FishItem fi){
+	public void addItem(FishItem fi){
 		SaleParcelItem spi = new SaleParcelItem();
 		spi.setFishItem(fi);
 		spi.setPrice(fi.getPrice());
@@ -103,8 +108,7 @@ public class CustomerBean implements Serializable {
 		}
 		spiList.add(spi);
 		parcel.setSaleParcelItems(spiList);
-		itemWeight = 0;
-		return "Customer";
+		itemWeight = 20;
 	}
 	
 	public double getTotalWeight(){
@@ -126,6 +130,13 @@ public class CustomerBean implements Serializable {
 	public String removeItem(SaleParcelItem spi){
 		parcel.getSaleParcelItems().remove(spi);
 		return "Parcel";
+	}
+	
+	public String submit(){
+		for(FishItem fi: fishItems)
+			coldStoreManagerService.updateFishItem(fi);
+		customerService.sumbitSaleParcel(parcel);
+		return "Customer";
 	}
 	
 	public String logout() {

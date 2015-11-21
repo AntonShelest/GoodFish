@@ -28,6 +28,8 @@ public class UserServiceImp implements UserService {
 		try{
 		user.setPassword(PasswordHash.createHash(user.getPassword()));
 		} catch (Exception e) {}
+		user.setPrepaymentPercent(100);
+		user.setRoleId("Customer");
     	return userDao.register(user);
     }
 	

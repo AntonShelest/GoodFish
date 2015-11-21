@@ -15,6 +15,7 @@ import com.bionic.edu.entity.SaleParcelItem;
 import com.bionic.edu.entity.TotalReport;
 import com.bionic.edu.entity.User;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;	
@@ -27,9 +28,24 @@ public class GeneralManagerServiceImp implements GeneralManagerService{
 	@Inject
 	GeneralManagerDao generalManagerDao;
 	
-	//User Story #5-9
+	//User Story #5,6,12
+	public List<FishType> getAllFishTypes(){
+		return generalManagerDao.getAllFishTypes();
+	}
+	
+	//User Story #5-8
+	public List<PurchaseParcel> getRegisteredPurchaseParcels(){
+		return generalManagerDao.getRegisteredPurchaseParcels();
+	}
+	
+	//User Story #5-8
 	@Transactional
 	public PurchaseParcel savePurchaseParcel(PurchaseParcel purchaseParcel){
+		purchaseParcel.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+		String forSale = "Y";
+		for(FishItem fi:purchaseParcel.getFishItems())
+			if (fi.getPrice() <= 0 || fi.getWeight() <= 0) forSale = "N";
+		purchaseParcel.setForSale(forSale);
 		return generalManagerDao.savePurchaseParcel(purchaseParcel);
 	}
 	
