@@ -41,7 +41,7 @@ public interface GeneralManagerDao {
 	
 	//User Story #12
 	public List<SaleParcelItem> getSaleItemsByPeriodAndFishType(
-			LocalDateTime beginDate, LocalDateTime endDate, int fishTypeId);
+	LocalDateTime beginDate, LocalDateTime endDate, int fishTypeId);
 	
 	//User Story #5,6,12
 	public List<FishType> getAllFishTypes();

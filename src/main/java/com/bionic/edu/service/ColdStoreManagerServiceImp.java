@@ -45,6 +45,7 @@ public class ColdStoreManagerServiceImp implements ColdStoreManagerService {
 	public SaleParcel registerShipment(SaleParcel saleParcel){
 		if (saleParcel.getStatus().equals("R")){
 			saleParcel.setStatus("H");
+			saleParcel.setShipped(Timestamp.valueOf(LocalDateTime.now()));
 			return coldStoreManagerDao.registerShipment(saleParcel);
 		}
 		return saleParcel;

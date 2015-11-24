@@ -18,71 +18,94 @@
 				<h1>Hello, Dear #{customer.user.name}!</h1>
 			</div>
 		</div>
-		<h:form>
-			<h:commandLink value="Exit" action="#{customer.logout()}"/>
-		</h:form>
-		<div class="blankSection"></div>
-			
-		<h:form>
-			<h:commandLink action="Parcel">
-	  				<h:graphicImage value="resources/image/parcel/saleParcel2.jpg" />
-			</h:commandLink>
-		</h:form>
-		<span>Total weight</span>
-		<h:outputText id="totalWeight" value="#{customer.getTotalWeight()}"/>
-		<br/>
-		<span>Total price</span>
-		<h:outputText id="totalPrice" value="#{customer.getTotalPrice()}"/>
 		
-		<h:panelGrid columns="3" style="width:100%">
-		<h:dataTable id="table" value="#{customer.fishItems}" 
-				 var="fishItem"
-				 styleClass="table" 
-				 headerClass="tableHeader" 
-				 rowClasses="tableOddRow, tableEvenRow"> 
-		
-			<h:column> 
-				<f:facet name="header">Fish Type</f:facet> 
-				#{fishItem.fishType.name} 
-			</h:column>
-			
-			<h:column> 
-				<f:facet name="header">Price</f:facet> 
-				#{fishItem.price} 
-			</h:column>
-				 
-			<h:column> 
-				<f:facet name="header">Total Weight</f:facet> 
-				#{fishItem.weight}
-			</h:column>
-			
-		</h:dataTable>
-		
-		<h:dataTable value="#{customer.fishItems}" 
-				 var="fishItem"
-				 styleClass="table" 
-				 headerClass="tableHeader" 
-				 rowClasses="tableOddRow, tableEvenRow">
-				 	
-			<h:column> 
-				<f:facet name="header">Add</f:facet>
-				<h:form>
-				Specify weight
-				<h:inputText value="#{customer.itemWeight}" style="width:40%"/>
-				<h:commandLink  action="#{customer.addItem(fishItem)}" >
-					<h:graphicImage value="resources/image/parcel/saleParcel2.jpg" 
-						height="16" width="16" title="Add"/>
-					<f:ajax execute="@all" render=":table :totalWeight :totalPrice"/>
-				</h:commandLink>
+		<div>
+			<div class="redirectIcon" style="float:left; position:relative">
+				<h:form id="totals">
+					<h:commandLink action="Parcel" style="position:relative;">
+			  				<h:graphicImage value="resources/image/cart-icon.jpg" 
+			  					height="100" width="100" margin="10" 
+			  					title="Shopping cart">
+			  				</h:graphicImage>
+					</h:commandLink>
+					<h4 style="position:absolute; left:40px; top:0px;">
+						<h:outputText value="#{customer.getTotalPrice()} UAH"/>
+					</h4>
+					
+					<h4 style="position:absolute; left:50px; top:40px;">
+						<h:outputText value="#{customer.getTotalWeight()} T"/>
+					</h4>
 				</h:form>
-			</h:column>
+			</div>
+			
+			<div class="redirectIcon" style="float:right">
+				<h:form>
+					<h:commandLink action="#{customer.logout()}" >
+						<h:graphicImage styleClass="icon" value="resources/image/exit.gif"
+							height="50" width="50" margin="10" title="Exit"/>
+					</h:commandLink>
+				</h:form>
+			</div>
+		</div>	
 		
-		</h:dataTable>
-		</h:panelGrid>
+		<div class="blankSection"></div>
+		<div class="blankSection"></div>
 		
-		<h:form>
-			<h:commandButton value="submit" action="#{customer.submit()}"/>
-		</h:form>
+		<table class="main-container">
+			<tr>
+			<td style="border: solid 1px black; padding:0 0; border-right:none;">
+			<h:dataTable id="table" value="#{customer.fishItems}" 
+					 var="fishItem"
+					 styleClass="table" 
+					 headerClass="tableHeader" 
+					 rowClasses="tableOddRow, tableEvenRow"> 
+			
+				<h:column> 
+					<f:facet name="header">Fish Type</f:facet> 
+					#{fishItem.fishType.name} 
+				</h:column>
+				
+				<h:column> 
+					<f:facet name="header">Price</f:facet> 
+					#{fishItem.price} 
+				</h:column>
+					 
+				<h:column> 
+					<f:facet name="header">Total Weight</f:facet> 
+					#{fishItem.weight}
+				</h:column>
+				
+			</h:dataTable>
+			</td>
+			
+			<td style="border: solid 1px black; border-left:none;">
+			<h:dataTable value="#{customer.fishItems}" 
+					 var="fishItem"
+					 styleClass="table" 
+					 headerClass="tableHeader" 
+					 rowClasses="tableOddRow, tableEvenRow">
+					 	
+				<h:column> 
+					<f:facet name="header">Add</f:facet>
+					<h:form>
+					<h:inputText value="#{customer.itemWeight}" style="height:18px; width:40px;"/>
+					<h:commandLink  action="#{customer.addItem(fishItem)}" >
+						<h:graphicImage value="resources/image/edit-icon.png" 
+							height="15" width="15" style="margin:auto;" title="Add"/>
+						<f:ajax execute="@form" render=":table :totals"/>
+					</h:commandLink>
+					</h:form>
+				</h:column>
+			
+			</h:dataTable>
+			</td>
+			</tr>
+		</table>
+		
+		<div class="centerHeader">
+			<h:commandButton class="button" value="Sabmit"
+				action="#{customer.submit}" />
+		</div>
 		
 	</ui:define>
 </ui:composition>

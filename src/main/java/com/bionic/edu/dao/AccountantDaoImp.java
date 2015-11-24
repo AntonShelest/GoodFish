@@ -1,5 +1,7 @@
 package com.bionic.edu.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -26,7 +28,16 @@ public class AccountantDaoImp implements AccountantDao {
 				+ "WHERE spi.saleParcel.id = :id";
 		TypedQuery<Double> query = em.createQuery(sql, Double.class);
 		query.setParameter("id", saleParcel.getId());
-		return query.getSingleResult();
+		try{return query.getSingleResult();}
+		catch(NullPointerException e){return 0;}
+	}
+	
+	//User Story #16
+	public List<Payment> getAllPayments(){
+		String sql = "SELECT p FROM Payment p ORDER BY p.tstamp DESC";
+		TypedQuery<Payment> query = em.createQuery(sql, Payment.class);
+		try{return query.getResultList();}
+		catch(NullPointerException e){return null;}
 	}
 	
 	//User Story #16
@@ -37,5 +48,20 @@ public class AccountantDaoImp implements AccountantDao {
 		query.setParameter("id", saleParcel.getId());
 		try{return query.getSingleResult();}
 		catch(NullPointerException e){return 0;}
+	}
+	
+	//User Story #17
+	public List<SaleParcel> getCurrentParcels(){
+		String sql = "SELECT sp FROM SaleParcel sp "
+				+ "WHERE sp.status <> 'C'";
+		TypedQuery<SaleParcel> query = em.createQuery(sql, SaleParcel.class);
+		try{return query.getResultList();}
+		catch(NullPointerException e){return null;}
+	}
+	
+	//User Story #17
+	public SaleParcel approve4Ship(SaleParcel saleParcel){
+		em.merge(saleParcel);
+		return saleParcel;
 	}
 }

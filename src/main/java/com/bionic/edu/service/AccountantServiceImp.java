@@ -1,6 +1,8 @@
 package com.bionic.edu.service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -40,8 +42,27 @@ public class AccountantServiceImp implements AccountantService{
 				saleParcel.setStatus("R");
 			remainedAmount = 0;
 		}	
-
+		
+		payment.setTstamp(Timestamp.valueOf(LocalDateTime.now()));
 		accountantDao.registerPayment(payment);
 		return remainedAmount;
+	}
+	
+	//User Story #16
+	public List<Payment> getAllPayments(){
+		return accountantDao.getAllPayments();
+	}
+	
+	//User Story #17
+	public List<SaleParcel> getCurrentParcels(){
+		return accountantDao.getCurrentParcels();
+	}
+	
+	//User Story #17
+	@Transactional
+	public SaleParcel approve4Ship(SaleParcel saleParcel){
+		if (saleParcel.getStatus().equals("S"))
+			saleParcel.setStatus("R");
+		return accountantDao.approve4Ship(saleParcel);
 	}
 }

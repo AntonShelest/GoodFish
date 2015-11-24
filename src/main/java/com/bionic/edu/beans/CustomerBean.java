@@ -127,9 +127,8 @@ public class CustomerBean implements Serializable {
 		return sum;
 	}
 	
-	public String removeItem(SaleParcelItem spi){
+	public void removeItem(SaleParcelItem spi){
 		parcel.getSaleParcelItems().remove(spi);
-		return "Parcel";
 	}
 	
 	public String submit(){

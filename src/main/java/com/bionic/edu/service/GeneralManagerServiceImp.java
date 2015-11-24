@@ -140,8 +140,9 @@ public class GeneralManagerServiceImp implements GeneralManagerService{
 			
 			TotalReport tr = generalManagerDao.generateTotalReport(beginDate, currDate);
 			
-			reportByDateList.add(new ReportByDate(beginDate, currDate,
-					tr.getSum(), tr.getWeight(), tr.getIncome()));	
+			if (tr.getSum() != 0)
+				reportByDateList.add(new ReportByDate(beginDate, currDate,
+						tr.getSum(), tr.getWeight(), tr.getIncome()));	
 			
 			beginDate = currDate;
 		}
